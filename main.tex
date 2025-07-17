@@ -1,0 +1,34 @@
+\documentclass{article}
+
+% Basic packages
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Test LaTeX Document}
+\author{jlieth}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+This is a simple test document for validating LaTeX builds in a GitHub CI pipeline.
+
+\section{Equation}
+Here is a basic equation:
+\begin{equation}
+    E = mc^2
+\end{equation}
+
+\section{Figure Placeholder}
+Figure~\ref{fig:placeholder} is a sample placeholder.
+
+\begin{figure}[h]
+    \centering
+    \fbox{\rule{0pt}{2in} \rule{0.9\linewidth}{0pt}}
+    \caption{Placeholder figure}
+    \label{fig:placeholder}
+\end{figure}
+
+\end{document}
