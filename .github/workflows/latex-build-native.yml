@@ -27,6 +27,12 @@ jobs:
         run: |
           latexmk -pdf -interaction=nonstopmode -file-line-error main.tex
 
+      - name: Upload PDF artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: compiled-pdf
+          path: main.pdf
+
       - name: Generate release tag and title
         id: release_info
         run: |
