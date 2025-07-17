@@ -1,0 +1,46 @@
+name: LaTeX Build and Release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.tex'
+      - 'figures/**'
+      - 'images/**'
+      - 'assets/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-extra latexmk
+
+      - name: Compile LaTeX document
+        run: |
+          latexmk -pdf -interaction=nonstopmode -file-line-error main.tex
+
+      - name: Generate release tag and title
+        id: release_info
+        run: |
+          export TZ=UTC
+          TAG="v$(date +'%Y%m%d%H%M%S')"
+          TITLE="$(date +'%d-%m-%Y %H:%M:%S')"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "title=$TITLE" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.release_info.outputs.tag }}
+          name: ${{ steps.release_info.outputs.title }}
+          files: main.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
